@@ -559,7 +559,7 @@ function get_category_info($category)
 // Return default category
 function default_category()
 {
-    $tmp = array();
+//    $tmp = array();
     $desc = new stdClass;
 
     $desc->title = i18n("Uncategorized");
@@ -568,11 +568,10 @@ function default_category()
 
     $desc->description = 'Topics that don&#39;t need a category, or don&#39;t fit into any other existing category.';
 
-    return $tmp[] = $desc;
+    return [$desc];
 }
 
 // Return category list
-
 function category_list($custom = null) {
 
     $dir = "cache/widget";
@@ -805,7 +804,6 @@ function get_author($name)
 // Return default profile
 function default_profile($name)
 {
-    $tmp = array();
     $author = new stdClass;
 
     $author->name = $name;
@@ -813,7 +811,7 @@ function default_profile($name)
 
     $author->description = 'Just another HTMLy user';
 
-    return $tmp[] = $author;
+    return [$author];
 }
 
 // Return static page.
@@ -2518,7 +2516,7 @@ function generate_sitemap($str)
         echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
         if($posts) {
-            foreach ($posts as $index => $v) {
+            foreach ($posts as $v) {
 
                 $arr = explode('_', $v);
 
@@ -2560,7 +2558,7 @@ function generate_sitemap($str)
         echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
         if($posts) {
-            foreach ($posts as $index => $v) {
+            foreach ($posts as $v) {
 
                 $arr = explode('_', $v);
 
@@ -3177,7 +3175,7 @@ function replace_href($string, $tag, $class, $url)
         if ($_tag->getAttribute('class') == $class) {
             // If match class get the href value
             $old = $_tag->getAttribute('href');
-            $new = $_tag->setAttribute('href', $url . utf8_decode($old));
+            $_tag->setAttribute('href', $url . utf8_decode($old));
         }
     }
 

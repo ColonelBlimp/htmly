@@ -483,6 +483,7 @@ function route($method, $pattern, $callback = null)
         // callback is null, so this is a route invokation. look up the callback.
         foreach ($route_map[$method] as $pat => $obj) {
 
+            $vals = [];
             // if the requested uri ($pat) has a matching route, let's invoke the cb
             if (!preg_match($obj['xp'], $pattern, $vals))
                 continue;
@@ -492,11 +493,12 @@ function route($method, $pattern, $callback = null)
 
             // construct the params for the callback
             array_shift($vals);
+            $keys = [];
             preg_match_all('@:([\w]+)@', $pat, $keys, PREG_PATTERN_ORDER);
             $keys = array_shift($keys);
             $argv = array();
 
-            foreach ($keys as $index => $id) {
+            foreach ($keys as $id) {
                 $id = substr($id, 1);
                 if (isset($vals[$id])) {
                     array_push($argv, trim(urldecode($vals[$id])));
