@@ -1,0 +1,9 @@
+.dropdown-content-container {
+  display: none;
+  position: absolute;
+  background-color: white;
+  width: 100%;
+  overflow: auto;
+  z-index: 1;
+}
+.show {display: block;}
