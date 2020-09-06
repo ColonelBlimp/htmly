@@ -2053,9 +2053,9 @@ function get_menu($custom)
 
         if (config('blog.enable') == 'true' ) {
             if ($req == site_path() . '/blog' || stripos($req, site_path() . '/blog?page') !== false) {
-                echo '<li class="item active"><a href="' . site_url() . 'blog">' . 'Blog' . '</a></li>';
+                echo '<li class="item active"><a href="' . site_url() . 'blog">' . i18n('blog_link_title') . '</a></li>';
             } else {
-                echo '<li class="item"><a href="' . site_url() . 'blog">' . 'Blog' . '</a></li>';
+                echo '<li class="item"><a href="' . site_url() . 'blog">' . i18n('blog_link_title') . '</a></li>';
             }
         }
 
@@ -2128,9 +2128,9 @@ function get_menu($custom)
         }
         if (config('blog.enable') == 'true' ) {
             if ($req == site_path() . '/blog' || stripos($req, site_path() . '/blog?page') !== false) {
-                echo '<li class="item active"><a href="' . site_url() . 'blog">' . 'Blog' . '</a></li>';
+                echo '<li class="item active"><a href="' . site_url() . 'blog">' . i18n('blog_link_title') . '</a></li>';
             } else {
-                echo '<li class="item"><a href="' . site_url() . 'blog">' . 'Blog' . '</a></li>';
+                echo '<li class="item"><a href="' . site_url() . 'blog">' . i18n('blog_link_title') . '</a></li>';
             }
         }
         echo '</ul>';
@@ -2140,22 +2140,20 @@ function get_menu($custom)
 // Search form
 function search($text = null, $inputClass = "search-input", $btnClass = "search-button")
 {
+    ob_start();
     if(!empty($text)) {
-        echo <<<EOF
-    <form id="search-form" method="get">
-        <input type="text" class="{$inputClass}" name="search" value="{$text}" onfocus="if (this.value == '{$text}') {this.value = '';}" onblur="if (this.value == '') {this.value = '{$text}';}">
-        <input type="submit" value="{$text}" class="{$btnClass}">
-    </form>
-EOF;
+        echo  "<form id=\"search-form\" method=\"get\">";
+        echo "<input type=\"text\" class=\"$inputClass\" name=\"search\" value=\"$text\" onfocus=\"if (this.value == '$text') {this.value = '';}\" onblur=\"if (this.value == '') {this.value = '$text';}\">";
+        echo "<input type=\"submit\" value=\"$text\" class=\"$btnClass\">";
+        echo "</form>";
     } else {
         $search = i18n('Search');
-        echo <<<EOF
-    <form id="search-form" method="get">
-        <input type="text" class="{$inputClass}" name="search" value="{$search}" onfocus="if (this.value == '{$search}') {this.value = '';}" onblur="if (this.value == '') {this.value = '{$search}';}">
-        <input type="submit" value="{$search}" class="{$btnClass}">
-    </form>
-EOF;
+        echo "<form id=\"search-form\" method=\"get\">";
+        echo "<input type=\"text\" class=\"$inputClass\" name=\"search\" value=\"$search\" onfocus=\"if (this.value == '$search') {this.value == '';}\" onblur=\"if (this.value == '') {this.value = '$search';}\">";
+        echo "<input type=\"submit\" value=\"$search\" class=\"$btnClass\">";
+        echo "</form>";
     }
+    echo ob_get_clean();
     if (isset($_GET['search'])) {
         $search = _h($_GET['search']);
         $url = site_url() . 'search/' . remove_accent($search);
