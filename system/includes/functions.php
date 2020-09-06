@@ -846,6 +846,11 @@ function get_static_post($static)
                 // Get the contents and convert it to HTML
                 $post->body = MarkdownExtra::defaultTransform(remove_html_comments($content));
 
+                // Convert image tags to figures
+                if (config('fig.captions') == 'true') {
+                    $post->body = preg_replace( '/<p>(<img .*?alt="(.*?)"\s*\/>)<\/p>/', '<figure>$1<figcaption>$2</figcaption></figure>', $post->body );
+                }
+
                 if (config('views.counter') == 'true') {
                     $post->views = get_views($post->file);
                 }
@@ -891,6 +896,11 @@ function get_static_sub_post($static, $sub_static)
 
                 // Get the contents and convert it to HTML
                 $post->body = MarkdownExtra::defaultTransform(remove_html_comments($content));
+
+                // Convert image tags to figures
+                if (config('fig.captions') == 'true') {
+                    $post->body = preg_replace( '/<p>(<img .*?alt="(.*?)"\s*\/>)<\/p>/', '<figure>$1<figcaption>$2</figcaption></figure>', $post->body );
+                }
 
                 $post->views = get_views($post->file);
 
