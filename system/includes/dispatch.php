@@ -12,14 +12,17 @@ function _log($message)
     }
 }
 
-function site_url()
-{
+function site_url() {
     if (config('site.url') != null) {
         return \rtrim(config('site.url'), '/') . '/';
     }
-    $host = 'https://' . $_SERVER['HTTP_X_FORWARDED_SERVER'] . '/';
+    // We assume SSL for now. There is no way to determine if the connection is
+    // secure if our server is behind a proxy, and the proxy passes the request to
+    // us over HTTP.
+    //TODO: make this configurable.
+    $host = 'https://' . $_SERVER['HTTP_X_FORWARDED_HOST'] . '/';
     if (empty($host)) {
-        \error(500, '$_SERVER[HTTP_X_FORWARDED_SERVER] or [site.url] is not set');
+        \error(500, '$_SERVER[HTTP_X_FORWARDED_HOST] or [site.url] is not set');
     }
     return $host;
 }
@@ -29,7 +32,7 @@ function site_path()
     static $_path;
 
     if (site_url() == null) {
-        error(500, '$_SERVER[HTTP_X_FORWARDED_SERVER] or [site.url] is not set');
+        error(500, '$_SERVER[HTTP_X_FORWARDED_HOST] or [site.url] is not set');
     }
 
     if (!$_path) {
