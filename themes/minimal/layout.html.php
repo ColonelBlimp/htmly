@@ -32,7 +32,64 @@
    <div class="grid row-gap-1 grid-cols-1 md:grid-cols-3 md:gap-3">
     <div class="col-span-1 md:col-span-2">
      <main role="main">
+<?php echo content();?>
      </main>
+    </div>
+    <div class="col-span-1">
+     <aside>
+      <section class="p-2 pb-4">
+       <form>
+        <input class="text-xs font-semibold p-1 border rounded border-gray-500 w-full focus:border-blue-500 focus:text-bule-500 focus:shadow" type="search" placeholder="<?php echo i18n("search_placeholder");?>">
+        <button type="submit" class="search-submit"></button>
+       </form>
+      </section>
+      <section class="border rounded border-gray-400 mb-3">
+       <div class="divide-y">
+        <div class="bg-gray-250 px-2 pb-1">
+         <h2 class="font-semibold"><?php echo i18n("recent_aside_title");?></h2>
+        </div>
+        <ul class="text-xs divide-y">
+<?php
+foreach (recent_posts(true) as $post) {
+?>
+          <li class="p-1"><a href="<?php echo $post->url;?>"><?php echo $post->title;?></a></li>
+<?php
+}
+?>
+        </ul>
+       </div>
+      </section>
+      <section class="border rounded border-gray-400 mb-3">
+       <div class="divide-y">
+        <div class="bg-gray-250 px-2 pb-1">
+         <h2 class="font-semibold"><?php echo i18n("categories_aside_title");?></h2>
+        </div>
+        <ul class="text-xs divide-y">
+<?php
+foreach (category_list(true) as $cat) {
+?>
+         <li class="p-1"><a href="<?php echo site_url() . $cat[0];?>"><?php echo $cat[1];?></a></li>
+<?php
+}
+?>
+        </ul>
+       </div>
+      </section>
+      <section class="border rounded border-gray-400 mb-3">
+       <div class="divide-y">
+        <div class="bg-gray-250 px-2 pb-1">
+         <h2 class="font-semibold"><?php echo i18n("tags_aside_title");?></h2>
+        </div>
+<?php $i = 1; $tags = tag_cloud(true); arsort($tags); ?>
+        <ul class="text-xs divide-y">
+<?php foreach ($tags as $tag => $count):?>
+         <li class="p-1"><a href="<?php echo site_url();?>tag/<?php echo $tag;?>"><?php echo tag_i18n($tag);?> (<?php echo $count;?>)</a></li>
+<?php if ($i++ >= 5) break;?>
+<?php endforeach;?>
+        </ul>
+       </div>
+      </section>
+     </aside>
     </div>
    </div>
   </div>

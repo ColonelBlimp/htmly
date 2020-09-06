@@ -610,7 +610,6 @@ function category_list($custom = null) {
     }
 
     echo '</ul>';
-
 }
 
 // Return type page.
@@ -2139,21 +2138,21 @@ function get_menu($custom)
 }
 
 // Search form
-function search($text = null)
+function search($text = null, $inputClass = "search-input", $btnClass = "search-button")
 {
     if(!empty($text)) {
         echo <<<EOF
     <form id="search-form" method="get">
-        <input type="text" class="search-input" name="search" value="{$text}" onfocus="if (this.value == '{$text}') {this.value = '';}" onblur="if (this.value == '') {this.value = '{$text}';}">
-        <input type="submit" value="{$text}" class="search-button">
+        <input type="text" class="{$inputClass}" name="search" value="{$text}" onfocus="if (this.value == '{$text}') {this.value = '';}" onblur="if (this.value == '') {this.value = '{$text}';}">
+        <input type="submit" value="{$text}" class="{$btnClass}">
     </form>
 EOF;
     } else {
         $search = i18n('Search');
         echo <<<EOF
     <form id="search-form" method="get">
-        <input type="text" class="search-input" name="search" value="{$search}" onfocus="if (this.value == '{$search}') {this.value = '';}" onblur="if (this.value == '') {this.value = '{$search}';}">
-        <input type="submit" value="{$search}" class="search-button">
+        <input type="text" class="{$inputClass}" name="search" value="{$search}" onfocus="if (this.value == '{$search}') {this.value = '';}" onblur="if (this.value == '') {this.value = '{$search}';}">
+        <input type="submit" value="{$search}" class="{$btnClass}">
     </form>
 EOF;
     }
