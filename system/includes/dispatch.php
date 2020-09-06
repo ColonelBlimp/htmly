@@ -14,11 +14,14 @@ function _log($message)
 
 function site_url()
 {
-    if (config('site.url') == null)
-        error(500, '[site.url] is not set');
-
-    // Forcing the forward slash
-    return rtrim(config('site.url'), '/') . '/';
+    if (config('site.url') != null) {
+        return \rtrim(config('site.url'), '/') . '/';
+    }
+    $host = 'https://' . $_SERVER['HTTP_X_FORWARDED_SERVER'] . '/';
+    if (empty($host)) {
+        \error(500, '[site.url] is not set');
+    }
+    return $host;
 }
 
 function site_path()
