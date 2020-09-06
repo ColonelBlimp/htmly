@@ -19,7 +19,7 @@ function site_url()
     }
     $host = 'https://' . $_SERVER['HTTP_X_FORWARDED_SERVER'] . '/';
     if (empty($host)) {
-        \error(500, '[site.url] is not set');
+        \error(500, '$_SERVER[HTTP_X_FORWARDED_SERVER] or [site.url] is not set');
     }
     return $host;
 }
@@ -28,11 +28,13 @@ function site_path()
 {
     static $_path;
 
-    if (config('site.url') == null)
-        error(500, '[site.url] is not set');
+    if (site_url() == null) {
+        error(500, '$_SERVER[HTTP_X_FORWARDED_SERVER] or [site.url] is not set');
+    }
 
-    if (!$_path)
-        $_path = rtrim(parse_url(config('site.url'), PHP_URL_PATH), '/');
+    if (!$_path) {
+        $_path = rtrim(parse_url(site_url(), PHP_URL_PATH), '/');
+    }
 
     return $_path;
 }
