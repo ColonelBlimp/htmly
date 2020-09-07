@@ -1,4 +1,7 @@
 <?php
+if (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50300) {
+    error(500, 'HTMLy requires at least PHP 5.3 to run.');
+}
 
 // Load the configuration file
 config('source', $config_file);

@@ -270,12 +270,14 @@ function get_posts($posts, $page = 1, $perpage = 0)
             $category = default_category();
             $post->category = '<a href="' . $category->url . '">' . $category->title . '</a>';
             $post->categoryb = '<a itemprop="item" href="' . $category->url . '"><span itemprop="name">' . $category->title . '</span></a>';
+            $post->categoryp = $category->url;
         } else {
 
             foreach ($catC as $v) {
                 if ($v['0'] === $str[count($str) - 3]) {
                     $post->category = '<a href="' . site_url() . 'category/' . $v['0'] . '">' . $v['1'] . '</a>';
                     $post->categoryb = '<a itemprop="item" href="' . site_url() . 'category/' . $v['0'] . '"><span itemprop="name">' . $v['1'] . '</span></a>';
+                    $post->categoryp = site_url() . 'category/' . $v['0'];
                 }
             }
 

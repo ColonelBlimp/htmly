@@ -68,7 +68,7 @@ foreach (recent_posts(true) as $post) {
 <?php
 foreach (category_list(true) as $cat) {
 ?>
-         <li class="p-1"><a href="<?php echo site_url() . $cat[0];?>"><?php echo $cat[1];?></a></li>
+         <li class="p-1"><a href="<?php echo site_url() . 'category/' . $cat[0];?>"><?php echo $cat[1];?></a></li>
 <?php
 }
 ?>

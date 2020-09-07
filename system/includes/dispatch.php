@@ -1,6 +1,6 @@
 <?php
 if (!defined('PHP_VERSION_ID') || PHP_VERSION_ID < 50300) {
-    error(500, 'dispatch requires at least PHP 5.3 to run.');
+    error(500, 'HTMLy requires at least PHP 5.3 to run.');
 }
 
 function _log($message)
@@ -13,18 +13,37 @@ function _log($message)
 }
 
 function site_url() {
-    if (config('site.url') != null) {
-        return \rtrim(config('site.url'), '/') . '/';
+    static $_site_url;
+
+    if (empty($_site_url)) {
+        if (config('site.url') != null) {
+            $_site_url = \rtrim(config('site.url'), '/') . '/';
+        } else {
+            $protocol = config('host.protocol');
+            if (empty($protocol)) {
+                \error(500, '[host.protocol] is not set');
+            }
+            $hostHeaderName = config('host.name_header');
+            if (empty($hostHeaderName)) {
+                \error(500, '[host.name_header] is not set');
+            }
+            if (!\array_key_exists($hostHeaderName, $_SERVER)) {
+                \error(500, "$hostHeaderName from [host.name_header] has not been set in the request");
+            }
+            $host = $_SERVER[$hostHeaderName];
+            $port = config('host.port');
+            if (empty($port)) {
+                \error(500, '[host.port] is not set');
+            }
+            if ($port === '80' || $port === '443') {
+                $port = '';
+            } else {
+                $port = ':' . $port;
+            }
+            $_site_url = $protocol . '://' . $host . $port;
+        }
     }
-    // We assume SSL for now. There is no way to determine if the connection is
-    // secure if our server is behind a proxy, and the proxy passes the request to
-    // us over HTTP.
-    //TODO: make this configurable.
-    $host = 'https://' . $_SERVER['HTTP_X_FORWARDED_HOST'] . '/';
-    if (empty($host)) {
-        \error(500, '$_SERVER[HTTP_X_FORWARDED_HOST] or [site.url] is not set');
-    }
-    return $host;
+    return  $_site_url;
 }
 
 function site_path()
@@ -32,7 +51,7 @@ function site_path()
     static $_path;
 
     if (site_url() == null) {
-        error(500, '$_SERVER[HTTP_X_FORWARDED_HOST] or [site.url] is not set');
+        error(500, 'HTTP_X_FORWARDED_HOST or [site.url] is not set');
     }
 
     if (!$_path) {
